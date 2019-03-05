@@ -185,24 +185,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         return playerText;
     }
     
-    @Override
-    public void onGameOver() {
-        String gameOverText = "GAME OVER!";
-        playAgain.setVisibility(View.VISIBLE);
-        winnerTextView.setText(gameOverText);
-        title.setVisibility(View.GONE);
-    }
-    
-    @Override
-    public void onGameWonByPlayer(Player winner, String message) {
-        playAgain.setVisibility(View.VISIBLE);
-        String winnerText = getPlayerText(winner) + " won the game";
-        Toast.makeText(getApplicationContext(), message, Toast.LENGTH_SHORT).show();
-        winnerTextView.setText(winnerText);
-        title.setVisibility(View.GONE);
-        enableGame(false);
-    }
-    
     private void enableGame(boolean enable) {
         b00.setEnabled(enable);
         b01.setEnabled(enable);
@@ -247,6 +229,24 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         b20.setText("");
         b21.setText("");
         b22.setText("");
+    }
+    
+    @Override
+    public void onGameOver() {
+        String gameOverText = "GAME OVER!";
+        playAgain.setVisibility(View.VISIBLE);
+        winnerTextView.setText(gameOverText);
+        title.setVisibility(View.GONE);
+    }
+    
+    @Override
+    public void onGameWonByPlayer(Player winner, String message) {
+        playAgain.setVisibility(View.VISIBLE);
+        String winnerText = getPlayerText(winner) + " won the game";
+        Toast.makeText(getApplicationContext(), message, Toast.LENGTH_SHORT).show();
+        winnerTextView.setText(winnerText);
+        title.setVisibility(View.GONE);
+        enableGame(false);
     }
 }
 
