@@ -184,7 +184,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     
     @Override
     public void onGameOver() {
-    
+        String gameOverText = "GAME OVER!";
+        winnerTextView.setText(gameOverText);
+        title.setVisibility(View.GONE);
     }
     
     @Override

@@ -15,10 +15,12 @@ public class Board {
             {5, 6, 7},
             {8, 9, 10},
     };
+    private int stepsPlayed;
     private OnGameCompletedCallbacks onGameCompletedCallbacks;
     
     public Board(@NonNull OnGameCompletedCallbacks onGameCompletedCallbacks) {
         this.onGameCompletedCallbacks = onGameCompletedCallbacks;
+        stepsPlayed = 0;
     }
     
     public void setBoxFilled(int x, int y, Player player) {
@@ -27,7 +29,7 @@ public class Board {
             boxes[x][y] = 1;
         else
             boxes[x][y] = 0;
-        
+        stepsPlayed++;
         printCurrentBoardStatus();
         checkIfGameCompleted(player);
     }
@@ -37,7 +39,7 @@ public class Board {
         for (int i = 0; i < 3; i++) {
             if (boxes[i][0] == boxes[i][1] && boxes[i][0] == boxes[i][2]) {
                 onGameCompletedCallbacks.onGameWonByPlayer(player, "Won at " + (i + 1) + " row");
-                break;
+                return;
             }
         }
         
@@ -45,18 +47,23 @@ public class Board {
         for (int i = 0; i < 3; i++) {
             if (boxes[0][i] == boxes[1][i] && boxes[0][i] == boxes[2][i]) {
                 onGameCompletedCallbacks.onGameWonByPlayer(player, "Won at " + (i + 1) + " column");
-                break;
+                return;
             }
         }
         
         //First diagonal
         if (boxes[0][0] == boxes[1][1] && boxes[0][0] == boxes[2][2]) {
             onGameCompletedCallbacks.onGameWonByPlayer(player, "Won at First Diagonal");
+            return;
         }
         
         //Second diagonal
         if (boxes[0][2] == boxes[1][1] && boxes[0][2] == boxes[2][0]) {
             onGameCompletedCallbacks.onGameWonByPlayer(player, "Won at Second Diagonal");
+        }
+        
+        if (stepsPlayed == 9) {
+            onGameCompletedCallbacks.onGameOver();
         }
     }
     
