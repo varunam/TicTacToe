@@ -10,17 +10,13 @@ import android.util.Log;
 public class Board {
     
     private static final String TAG = Board.class.getSimpleName();
-    private int boxes[][] = {
-            {2, 3, 4},
-            {5, 6, 7},
-            {8, 9, 10},
-    };
+    private int boxes[][];
     private int stepsPlayed;
     private OnGameCompletedCallbacks onGameCompletedCallbacks;
     
     public Board(@NonNull OnGameCompletedCallbacks onGameCompletedCallbacks) {
         this.onGameCompletedCallbacks = onGameCompletedCallbacks;
-        stepsPlayed = 0;
+        reset();
     }
     
     public void setBoxFilled(int x, int y, Player player) {
@@ -38,7 +34,7 @@ public class Board {
         //Horizontal --- rows
         for (int i = 0; i < 3; i++) {
             if (boxes[i][0] == boxes[i][1] && boxes[i][0] == boxes[i][2]) {
-                onGameCompletedCallbacks.onGameWonByPlayer(player, "Won at " + (i + 1) + " row");
+                onGameCompletedCallbacks.onGameWonByPlayer(player, "Won at row " + (i + 1));
                 return;
             }
         }
@@ -46,7 +42,7 @@ public class Board {
         //Vertical --- columns
         for (int i = 0; i < 3; i++) {
             if (boxes[0][i] == boxes[1][i] && boxes[0][i] == boxes[2][i]) {
-                onGameCompletedCallbacks.onGameWonByPlayer(player, "Won at " + (i + 1) + " column");
+                onGameCompletedCallbacks.onGameWonByPlayer(player, "Won at column " + (i + 1));
                 return;
             }
         }
@@ -80,5 +76,14 @@ public class Board {
     
     public int getBoxStatus(int x, int y) {
         return boxes[x][y];
+    }
+    
+    public void reset() {
+        stepsPlayed = 0;
+        boxes = new int[][]{
+                {2, 3, 4},
+                {5, 6, 7},
+                {8, 9, 10},
+        };
     }
 }

@@ -18,7 +18,7 @@ import android.widget.Toast;
 public class MainActivity extends AppCompatActivity implements View.OnClickListener, OnGameCompletedCallbacks {
     
     private MainViewModel mainViewModel;
-    private Button b00, b01, b02, b10, b11, b12, b20, b21, b22;
+    private Button b00, b01, b02, b10, b11, b12, b20, b21, b22, playAgain;
     private TextView title, winnerTextView;
     
     private Board board;
@@ -36,31 +36,22 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         //init board
         board = new Board(this);
         
+        //textviews
         title = findViewById(R.id.title_text_id);
         winnerTextView = findViewById(R.id.winner_text_id);
+        playAgain = findViewById(R.id.play_again_id);
+        playAgain.setOnClickListener(this);
         
+        //player init
         currentPlayer = Player.PLAYER_1;
         showTurnNow(Player.PLAYER_1);
         
+        //init board buttons
         initBoardButtons();
-        resetBoardButtons();
         
         //init VM
         mainViewModel = ViewModelProviders.of(this).get(MainViewModel.class);
         mainViewModel.getWinner().observe(this, winnerObserver);
-        
-    }
-    
-    private void resetBoardButtons() {
-        b00.setText("");
-        b01.setText("");
-        b02.setText("");
-        b10.setText("");
-        b11.setText("");
-        b12.setText("");
-        b20.setText("");
-        b21.setText("");
-        b22.setText("");
     }
     
     private void initBoardButtons() {
@@ -148,7 +139,19 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 fillBox(b22, currentPlayer);
                 b22.setEnabled(false);
                 break;
+            case R.id.play_again_id:
+                resetGame();
+                break;
+            default:
+                break;
         }
+    }
+    
+    private void resetGame() {
+        enableGame(true);
+        resetBoardButtons();
+        board.reset();
+        playAgain.setVisibility(View.GONE);
     }
     
     private void fillBox(Button boxPlayed, Player currentPlayer) {
@@ -185,38 +188,65 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     @Override
     public void onGameOver() {
         String gameOverText = "GAME OVER!";
+        playAgain.setVisibility(View.VISIBLE);
         winnerTextView.setText(gameOverText);
         title.setVisibility(View.GONE);
     }
     
     @Override
     public void onGameWonByPlayer(Player winner, String message) {
+        playAgain.setVisibility(View.VISIBLE);
         String winnerText = getPlayerText(winner) + " won the game";
         Toast.makeText(getApplicationContext(), message, Toast.LENGTH_SHORT).show();
         winnerTextView.setText(winnerText);
         title.setVisibility(View.GONE);
-        disableGame();
+        enableGame(false);
     }
     
-    private void disableGame() {
-        b00.setEnabled(false);
-        b01.setEnabled(false);
-        b02.setEnabled(false);
-        b10.setEnabled(false);
-        b11.setEnabled(false);
-        b12.setEnabled(false);
-        b21.setEnabled(false);
-        b22.setEnabled(false);
-        b20.setEnabled(false);
-        b00.setTextColor(getResources().getColor(R.color.secondaryTextColor));
-        b01.setTextColor(getResources().getColor(R.color.secondaryTextColor));
-        b02.setTextColor(getResources().getColor(R.color.secondaryTextColor));
-        b20.setTextColor(getResources().getColor(R.color.secondaryTextColor));
-        b21.setTextColor(getResources().getColor(R.color.secondaryTextColor));
-        b22.setTextColor(getResources().getColor(R.color.secondaryTextColor));
-        b10.setTextColor(getResources().getColor(R.color.secondaryTextColor));
-        b11.setTextColor(getResources().getColor(R.color.secondaryTextColor));
-        b12.setTextColor(getResources().getColor(R.color.secondaryTextColor));
+    private void enableGame(boolean enable) {
+        b00.setEnabled(enable);
+        b01.setEnabled(enable);
+        b02.setEnabled(enable);
+        b10.setEnabled(enable);
+        b11.setEnabled(enable);
+        b12.setEnabled(enable);
+        b21.setEnabled(enable);
+        b22.setEnabled(enable);
+        b20.setEnabled(enable);
+        
+        if (enable) {
+            b00.setTextColor(getResources().getColor(R.color.colorAccent));
+            b01.setTextColor(getResources().getColor(R.color.colorAccent));
+            b02.setTextColor(getResources().getColor(R.color.colorAccent));
+            b20.setTextColor(getResources().getColor(R.color.colorAccent));
+            b21.setTextColor(getResources().getColor(R.color.colorAccent));
+            b22.setTextColor(getResources().getColor(R.color.colorAccent));
+            b10.setTextColor(getResources().getColor(R.color.colorAccent));
+            b11.setTextColor(getResources().getColor(R.color.colorAccent));
+            b12.setTextColor(getResources().getColor(R.color.colorAccent));
+        } else {
+            b00.setTextColor(getResources().getColor(R.color.secondaryTextColor));
+            b01.setTextColor(getResources().getColor(R.color.secondaryTextColor));
+            b02.setTextColor(getResources().getColor(R.color.secondaryTextColor));
+            b20.setTextColor(getResources().getColor(R.color.secondaryTextColor));
+            b21.setTextColor(getResources().getColor(R.color.secondaryTextColor));
+            b22.setTextColor(getResources().getColor(R.color.secondaryTextColor));
+            b10.setTextColor(getResources().getColor(R.color.secondaryTextColor));
+            b11.setTextColor(getResources().getColor(R.color.secondaryTextColor));
+            b12.setTextColor(getResources().getColor(R.color.secondaryTextColor));
+        }
+    }
+    
+    private void resetBoardButtons() {
+        b00.setText("");
+        b01.setText("");
+        b02.setText("");
+        b10.setText("");
+        b11.setText("");
+        b12.setText("");
+        b20.setText("");
+        b21.setText("");
+        b22.setText("");
     }
 }
 

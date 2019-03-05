@@ -3,4 +3,5 @@
     <string name="players_turn_now">%s\'s turn now</string>
     <string name="player_one">Player ONE</string>
     <string name="player_two">Player TWO</string>
+    <string name="play_again">Play Again</string>
 </resources>
